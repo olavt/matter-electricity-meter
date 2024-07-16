@@ -64,7 +64,7 @@ Make sure that the "GBL Compression (LZMA)" component under Platform->Bootloader
 
 Build the bootloader project, find the .s37 image file (under the Binaries folder) and flash it to your Silicon Labs Dev Kit.
 
-## Add USUART support for the Mikro Elektronika UART 1-WIRE CLICK
+## Add USUART support for the Mikro Elektronika M-BUS SLAVE CLICK
 
 Open the .slcp file in your project and select "SOFTWARE COMPONENTS".
 
