@@ -20,6 +20,13 @@ This article is based on Silicon Labs Gecko SDK version 4.3.2 with Silicon Labs 
 
 This article assumes that you have already installed Simplicity Studio V5 and the Simplicity SDK Suite v2024.6.0.
 
+## Mount the Mikro Elektronika M-BUS SLAVE CLICK
+
+When mounting the Mikro Elektronika M-BUS SLAVE CLICK on the Silicon Labs EFR32xG24 Explorer Kit Board make sure it's oriented correctly according to this illustration:
+
+![mikroBUS Add-on Board Orientation](./images/mikrobus-board-orientation.png)
+
+
 ## Enable long paths / filenames
 
 To avoid issues with filename length restrictions, make sure to apply settings to support longer paths / filenames.
