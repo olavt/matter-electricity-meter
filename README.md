@@ -9,7 +9,7 @@ This article is based on Silicon Labs Gecko SDK version 4.3.2 with Silicon Labs 
 
 <img src="./images/xg24-ek2703a.png" alt="Silicon Labs EFR32xG24 Explorer Kit Board" width="200" height="170"/>
 
-<img src="./images/uart-1-wire-click-thickbox_default-2.jpg" alt="Mikro Elektronika UART 1-WIRE CLICK" width="200" height="170"/>
+<img src="./images/mikroe-m-bus-slave-click.jpg" alt="Mikro Elektronika M-BUS SLAVE CLICK" width="200" height="170"/>
 
 ### What you will need
 
