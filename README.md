@@ -89,6 +89,14 @@ Select the "mikroe" instance and click "Configure"
 
 Change the Baud Rate to 2400, the Receive Buffer Size to 512 and the CTS and RTS to None.
 
+## Chgange the Matter Device Type
+
+Open the 'CHIPProjectConfig.h' file located in the project include directory.
+
+Change the CHIP_DEVICE_CONFIG_DEVICE_PRODUCT_ID as follows:
+
+#define CHIP_DEVICE_CONFIG_DEVICE_PRODUCT_ID 0x8003
+
 
 
 
