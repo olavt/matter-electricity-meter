@@ -61,13 +61,17 @@ Search for "FTD", select the "Stack (FTD") component and click on "Install".
 
 ![Install FTD](./images/install-ftd.png)
 
-When prompted to "Replace Stack (MTD) with Stack (FTD)" click OK.
+If you get the message "The Stack (FTD) you are attempting to install is conflicting with ICD Server Configuration. As a result, your component was not added.", select "Replace ICD Server Configuration with Stack (FTD)" and click OK.
+
+![Install FTD](./images/replace-icd-with-ftd.png)
+
+If you get the message "TThe Stack (FTD) you are attempting to install is conflicting with Stack (MTD). As a result, your component was not added.", select "Replace Stack (MTD) with Stack (FTD)" and click OK.
 
 ![Install FTD](./images/replace-mtd-with-ftd.png)
 
 ## Support for newer C++ versions
 
-By default, the project will support "-std=gnu++17". In the default project there are two settings related to the C++ language version. The first setting is the "C++ Language Dialect" setting under "Dialect" (under "GNU ARM C++ Compiler" settings).
+By default, the project will support "-std=gnu++17". Right click on the project and select "Properties". Then expand "C/C++ Build" and select "Settings". Expand "GNU ARM C++ Compiler" and select the desired C++ Language Dialect.
 
 ## Turn off C++ "No RTTI" option
 
@@ -105,13 +109,31 @@ Select the "mikroe" instance and click "Configure"
 
 Change the Baud Rate to 2400, the Receive Buffer Size to 512 and the CTS and RTS to None.
 
-## Chgange the Matter Device Type
+## Change the Matter Device Type
 
 Open the 'CHIPProjectConfig.h' file located in the project include directory.
 
 Change the CHIP_DEVICE_CONFIG_DEVICE_PRODUCT_ID as follows:
 
 #define CHIP_DEVICE_CONFIG_DEVICE_PRODUCT_ID 0x8003
+
+## Add Support for Matter Electrical Sensor
+
+Open the config/common/sensor-thread-app.zap file in the ZAP editor by double-clicking on it.
+
+By default the example project creates the following endpoints:
+
+![Default Endpoints](./images/default-endpoints.png)
+
+Delete endpoint 1 through 4.
+
+Create a new endpoint and select "Matter Electrical Sensor" in the Device dropdown list. Click Create.
+
+![Matter Electrical Sensor](./images/matter-electrical-sensor.png)
+
+
+
+
 
 
 
