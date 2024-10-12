@@ -125,7 +125,7 @@ By default the example project creates the following endpoints:
 
 ![Default Endpoints](./images/default-endpoints.png)
 
-Delete endpoint 1 through 4.
+Delete endpoint 1 through 3.
 
 Create a new endpoint and select "Matter Electrical Sensor" in the Device dropdown list. Click Create.
 
