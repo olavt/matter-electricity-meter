@@ -55,6 +55,50 @@ If you have a mains powered device, you may want to change the OpenThread stack 
 
 By default the sample is configured as a Minimal Thread Device.
 
+### Workaround for bug in Simplicity SDK Suite v2024.6.2
+
+Due to a bug in Simplicity SDK Suite v2024.6.2 you need to perform the following steps before installing the Full Thread Device Support:
+
+Open the .slcp file in your project and select "SOFTWARE COMPONENTS".
+
+#### Clear the flags in the Quality settings filter
+
+Clear all checkboxes in the QUality settings filter as shown below:
+
+![Quality Setting](./images/quality-setting.png)
+
+#### Remove all ICD related components
+
+Type in "ICD" in the search box and press Enter.
+
+Uninstall all these components:
+
+![Uninstall ICD components](./images/icd-components.png)
+
+Note! You may need to uninstall some of the lower components first due to some dependencies between them.
+
+#### Change configuration settings for the Matter Core Components component
+
+Type "matter core" in the search field. Expand the tree and find this component:
+
+![Matter Core Components](./images/matter-core-components.png)
+
+Click on the Configure cogweel and toggle off these settings as shown below:
+
+![Matter Core Components Configuration](./images/matter-core-components-configuration.png)
+
+#### Remove the ICD Management cluster
+
+Open the .zap file found here:
+
+![Open ZAP file](./images/open-zap-file.png)
+
+Select Endpoint #0 in the left pane, search for "icd" in the search box and remove the ICD Management cluster by unchecking the Server checkbox.
+
+![Remove ICD Management Cluster](./images/remove-icd-management-cluster.png)
+
+### Install the Full Thread Device support
+
 Open the .slcp file in your project and select "SOFTWARE COMPONENTS".
 
 Search for "FTD", select the "Stack (FTD") component and click on "Install".
@@ -68,6 +112,8 @@ If you get the message "The Stack (FTD) you are attempting to install is conflic
 If you get the message "TThe Stack (FTD) you are attempting to install is conflicting with Stack (MTD). As a result, your component was not added.", select "Replace Stack (MTD) with Stack (FTD)" and click OK.
 
 ![Install FTD](./images/replace-mtd-with-ftd.png)
+
+It might be a good idea to build the projects at this time to check that there are no build errors.
 
 ## Support for newer C++ versions
 
