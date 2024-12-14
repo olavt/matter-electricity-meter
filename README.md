@@ -177,7 +177,18 @@ Create a new endpoint and select "Matter Electrical Sensor" in the Device dropdo
 
 ![Matter Electrical Sensor](./images/matter-electrical-sensor.png)
 
+## Remove Support for deleted sensors
 
+Delete the following files:
+- include/SensorManager.h
+- src/DataModelCallbacks.cpp
+- src/SensorManager.cpp
+
+Now build the project to find the references to the deleted code. Delete the references to the deleted code.
+
+## Add new code for the Electricity Meter
+
+TBD
 
 
 
