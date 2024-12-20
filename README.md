@@ -49,6 +49,18 @@ Start by creating a new project in Simplicity Studio V5 by selecting the "Matter
 
 This is a good starting point as it already implements a fully functional Matter over Thread device.
 
+## Prepare the bootloader for Over-The-Air firmware upgrades
+
+See this article for more details on Creating a Gecko Bootloader for Use in Matter OTA Software Update: https://docs.silabs.com/matter/2.0.0/matter-overview-guides/ota-bootloader
+
+Open the .slcp file in your bootloader project and select "SOFTWARE COMPONENTS".
+
+Make sure that the "GBL Compression (LZMA)" component under Platform->Bootloader->Core is installed:
+
+![GBL Compression (LZMA)](./images/bootloader-core-gbl-compression-lzma.png)
+
+Build the bootloader project, find the .s37 image file (under the Binaries folder) and flash it to your Silicon Labs Dev Kit.
+
 ## Change the OpenThread stack from Minimal Thread Device (MTD) to Full Thread Device (FTD)
 
 If you have a mains powered device, you may want to change the OpenThread stack from Minimal Thread Device (MTD) to Full Thread Device (FTD) in order for the device to participate in routing of messages.
@@ -124,18 +136,6 @@ By default, the project will support "-std=gnu++17". Right click on the project 
 In order to use some C++ language features (like dynamic_cast) you may need to turn off the "No RTTI" option.
 
 ![Instance "mikroe"](./images/no-rtti.png)
-
-## Prepare the bootloader for Over-The-Air firmware upgrades
-
-See this article for more details on Creating a Gecko Bootloader for Use in Matter OTA Software Update: https://docs.silabs.com/matter/2.0.0/matter-overview-guides/ota-bootloader
-
-Open the .slcp file in your bootloader project and select "SOFTWARE COMPONENTS".
-
-Make sure that the "GBL Compression (LZMA)" component under Platform->Bootloader->Core is installed:
-
-![GBL Compression (LZMA)](./images/bootloader-core-gbl-compression-lzma.png)
-
-Build the bootloader project, find the .s37 image file (under the Binaries folder) and flash it to your Silicon Labs Dev Kit.
 
 ## Add USUART support for the Mikro Elektronika M-BUS SLAVE CLICK
 
