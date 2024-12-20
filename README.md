@@ -5,7 +5,7 @@
 
 This article shows how to create a Matter device that can read data from the HAN-port of a domestic electricity meter to read data for power usage and electricity consumption.
 
-This article is based on Silicon Labs Gecko SDK version 4.3.2 with Silicon Labs Matter 2.2.0.
+This article is based on Simplicity SDK Suite v2024.12.0 with Silicon Labs Matter 2.5.0 extensions (based on Matter version 1.4).
 
 <img src="./images/xg24-ek2703a.png" alt="Silicon Labs EFR32xG24 Explorer Kit Board" width="200" height="170"/>
 
@@ -18,7 +18,7 @@ This article is based on Silicon Labs Gecko SDK version 4.3.2 with Silicon Labs 
 - Silicon Labs EFR32xG24 Explorer Kit Board (EK2703A).
 - Mikro Elektronika M-BUS SLAVE CLICK
 
-This article assumes that you have already installed Simplicity Studio V5 and the Simplicity SDK Suite v2024.6.0.
+This article assumes that you have already installed Simplicity Studio V5 with Simplicity SDK Suite v2024.12.0 and Silicon Labs Matter 2.5.0.
 
 ## Mount the Mikro Elektronika M-BUS SLAVE CLICK
 
@@ -73,7 +73,7 @@ Type in "ICD" in the search box and press Enter.
 
 Uninstall all these components:
 
-![Uninstall ICD components](./images/icd-components.png)
+![Uninstall ICD components](./images/uninstall-icd-components.png)
 
 Note! You may need to uninstall some of the lower components first due to some dependencies between them.
 
