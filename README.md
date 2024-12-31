@@ -177,12 +177,11 @@ Create a new endpoint and select "Matter Electrical Sensor" in the Device dropdo
 
 ![Matter Electrical Sensor](./images/matter-electrical-sensor.png)
 
-## Remove Support for deleted sensors
+## Remove unused sensor type
 
-Delete the following files:
-- include/SensorManager.h
-- src/DataModelCallbacks.cpp
-- src/SensorManager.cpp
+When you create the sensor project it defaults to Occupancy Sensor and Temperature sensor. We will not be used the occupancy sensor functionality, so uninstall the "Occupancy Sensing Server Cluster".
+
+Search for "Occupancy" and uninstall the "Occupancy Sensing Server Cluster" component.
 
 Now build the project to find the references to the deleted code. Delete the references to the deleted code.
 
