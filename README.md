@@ -75,7 +75,7 @@ Open the .slcp file in your project and select "SOFTWARE COMPONENTS".
 
 #### Clear the flags in the Quality settings filter
 
-Clear all checkboxes in the QUality settings filter as shown below:
+Clear all checkboxes in the Quality settings filter as shown below:
 
 ![Quality Setting](./images/quality-setting.png)
 
@@ -184,6 +184,27 @@ When you create the sensor project it defaults to Occupancy Sensor and Temperatu
 Search for "Occupancy" and uninstall the "Occupancy Sensing Server Cluster" component.
 
 Now build the project to find the references to the deleted code. Delete the references to the deleted code.
+
+## Workaround for bug in sleep.c
+
+If you get a compilation error in sleep.c change the following code:
+
+From:
+
+```cpp
+#if defined(SL_CATALOG_IOSTREAM_EUSART_PRESENT) || defined(SL_CATALOG_IOSTREAM_USART_PRESENT)
+    isPending = isPending || efr32UartIsDataReady();
+#endif
+```
+
+to:
+
+```cpp
+#if defined(SL_CATALOG_OPENTHREAD_UART_PRESENT)
+    isPending = isPending || efr32UartIsDataReady();
+#endif
+```
+
 
 ## Add new code for the Electricity Meter
 
