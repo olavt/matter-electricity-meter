@@ -12,14 +12,14 @@ AidonAPDU::AidonAPDU(std::span<const uint8_t> fromSlice)
   _buffer = fromSlice;
 }
 
-AidonAPDU::~AidonAPDU()
-{
-}
-
 std::span<const uint8_t> AidonAPDU::NotificationBody()
 {
-  int start = 6;
-  int length = _buffer.size() - 6;
+  if (_buffer.size() < HEADER_SIZE) {
+    return {};
+  };
+
+  size_t start = HEADER_SIZE;
+  size_t length = _buffer.size() - start;
 
   std::span<const uint8_t> notificationBody = _buffer.subspan(start, length);
 

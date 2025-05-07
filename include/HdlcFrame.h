@@ -8,8 +8,8 @@
 #pragma once
 
 #include <cstdint>
-#include "ArraySlice.h"
 #include <span>
+#include <vector>
 
 class HdlcFrame
 {
@@ -28,20 +28,23 @@ public:
 
   int FormatType();
 
-  int FrameLength();
+  size_t FrameLength();
 
-  int DestinationAddressLength();
+  size_t DestinationAddressLength();
 
-  int SourceAddressLength();
+  size_t SourceAddressLength();
 
-  int Control();
+  uint8_t Control();
 
-  int HeaderCheckSequence();
+  uint16_t HeaderCheckSequence();
 
-  std::span<const uint8_t> Information();
+  // The Information field contains the payload
+  std::span<const uint8_t> InformationField();
 
-  int FrameCheckSequence();
+  // A 16-bit CRC (Cyclic Redundancy Check)
+  uint16_t FrameCheckSequence();
 
+  // The total length of the HDLC Frame
   int Length();
 
   bool ChecksumIsOk();
@@ -51,10 +54,10 @@ public:
 private:
 
   static constexpr std::size_t MAX_BUFFER_SIZE = 512;
-
-  uint8_t _buffer[MAX_BUFFER_SIZE];
-  int byteCount = 0;
+  std::vector<uint8_t> _buffer;
 
   uint16_t ComputeFrameCheckSequence();
+
+  size_t GetAddressLength(size_t start);
 
 };

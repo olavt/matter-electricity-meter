@@ -23,7 +23,7 @@ CosemObject::~CosemObject()
 //  SILABS_LOG("CosemObject destructed.");
 }
 
-CosemObject* CosemObject::Create(std::span<const uint8_t> fromBytes, int& position)
+std::unique_ptr<CosemObject> CosemObject::Create(std::span<const uint8_t> fromBytes, int& position)
 {
   //SILABS_LOG("[INFO] CosemObject::Create: position=%d", position);
   //SILABS_LOG("%s", CosemObject::ToHexString(fromBytes).c_str());
@@ -35,54 +35,53 @@ CosemObject* CosemObject::Create(std::span<const uint8_t> fromBytes, int& positi
   CosemDataType dataType = static_cast<CosemDataType>(fromBytes[position]);
   position++;
 
-  CosemObject* cosemObject = 0;
+  std::unique_ptr<CosemObject> cosemObject = nullptr;
 
   switch (dataType)
   {
     case CosemDataType::Array:
-      cosemObject = new CosemArray(fromBytes, position);
+      cosemObject = std::make_unique<CosemArray>(fromBytes, position);
       break;
 
     case CosemDataType::DoubleLongUnsigned:
-      cosemObject = new CosemUnsigned32(fromBytes, position);
-      break;
+      cosemObject = std::make_unique<CosemUnsigned32>(fromBytes, position);
 
     case CosemDataType::Enum:
-      cosemObject = new CosemEnum(fromBytes, position);
+      cosemObject = std::make_unique<CosemEnum>(fromBytes, position);
       break;
 
     case CosemDataType::Integer8:
-      cosemObject = new CosemInteger8(fromBytes, position);
+      cosemObject = std::make_unique<CosemInteger8>(fromBytes, position);
       break;
 
     case CosemDataType::Integer16:
-      cosemObject = new CosemInteger16(fromBytes, position);
+      cosemObject = std::make_unique<CosemInteger16>(fromBytes, position);
       break;
 
     case CosemDataType::OctetString:
-      cosemObject = new CosemOctetString(fromBytes, position);
+      cosemObject = std::make_unique<CosemOctetString>(fromBytes, position);
       break;
 
     case CosemDataType::Structure:
-      cosemObject = new CosemStructure(fromBytes, position);
+      cosemObject = std::make_unique<CosemStructure>(fromBytes, position);
       break;
 
     case CosemDataType::Unsigned16:
-      cosemObject = new CosemUnsigned16(fromBytes, position);
+      cosemObject = std::make_unique<CosemUnsigned16>(fromBytes, position);
       break;
 
     case CosemDataType::VisibleString:
-      cosemObject = new CosemVisibleString(fromBytes, position);
+      cosemObject = std::make_unique<CosemVisibleString>(fromBytes, position);
       break;
   }
 
   return cosemObject;
 }
 
-CosemObject* CosemObject::CreateObjectHierarchy(std::span<const uint8_t> fromBytes)
+std::unique_ptr<CosemObject> CosemObject::CreateObjectHierarchy(std::span<const uint8_t> fromBytes)
 {
   int position = 0;
-  CosemObject* rootObject = CosemObject::Create(fromBytes, position);
+  std::unique_ptr<CosemObject> rootObject = CosemObject::Create(fromBytes, position);
 
   return rootObject;
 }

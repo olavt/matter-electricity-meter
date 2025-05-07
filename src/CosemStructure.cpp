@@ -18,26 +18,23 @@ CosemStructure::CosemStructure(std::span<const uint8_t> fromBytes, int& position
 
   for (int i=0; i < length; i++)
   {
-    CosemObject* cosemObject = CosemObject::Create(fromBytes, position);
-    _cosemObjects.push_back(cosemObject);
+      std::unique_ptr<CosemObject> cosemObject = CosemObject::Create(fromBytes, position);
+      _cosemObjects.push_back(std::move(cosemObject));
   }
 }
 
-CosemStructure::~CosemStructure()
-{
-  int size = _cosemObjects.size();
-  for (int i=0; i < size; i++)
-    delete _cosemObjects[i];
-}
-
-int CosemStructure::size()
+int CosemStructure::size() const
 {
   return _cosemObjects.size();
 }
 
-CosemObject*& CosemStructure::operator[](int index)
+CosemObject* CosemStructure::operator[](size_t index)
 {
-  return _cosemObjects[index];
+    return _cosemObjects.at(index).get();
 }
 
+const CosemObject* CosemStructure::operator[](size_t index) const
+{
+    return _cosemObjects.at(index).get();
+}
 

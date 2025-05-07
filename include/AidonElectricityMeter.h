@@ -19,52 +19,31 @@ class AidonElectricityMeter : public ElectricityMeter
 
 public:
 
-  AidonElectricityMeter(SerialPort* serialPort);
+  AidonElectricityMeter(std::unique_ptr<SerialPort> serialPort);
 
   void ReadFromHanPort();
 
 private:
 
-  AidonHanReader* CreateHanReader(SerialPort* serialPort);
-
-  void ProcessOBISListVersionIdentifier(CosemStructure* cosemStructure);
-
-  void ProcessMeterId(CosemStructure* cosemStructure);
-
-  void ProcessMeterType(CosemStructure* cosemStructure);
-
-  void ProcessActivePowerPlus(CosemStructure* cosemStructure);
-
-  void ProcessActivePowerMinus(CosemStructure* cosemStructure);
-
-  void ProcessReactivePowerPlus(CosemStructure* cosemStructure);
-
-  void ProcessReactivePowerMinus(CosemStructure* cosemStructure);
-
-  void ProcessCurrentPhaseL1(CosemStructure* cosemStructure);
-
-  void ProcessCurrentPhaseL2(CosemStructure* cosemStructure);
-
-  void ProcessCurrentPhaseL3(CosemStructure* cosemStructure);
-
-  void ProcessInstantaneousVoltageL1(CosemStructure* cosemStructure);
-
-  void ProcessInstantaneousVoltageL2(CosemStructure* cosemStructure);
-
-  void ProcessInstantaneousVoltageL3(CosemStructure* cosemStructure);
-
-  void ProcessMeterDateTime(CosemStructure* cosemStructure);
-
-  void ProcessCumulativeHourlyActiveImportEnergy(CosemStructure* cosemStructure);
-
-  void ProcessCumulativeHourlyActiveExportEnergy(CosemStructure* cosemStructure);
-
-  void ProcessCumulativeHourlyReactiveImportEnergy(CosemStructure* cosemStructure);
-
-  void ProcessCumulativeHourlyReactiveExportEnergy(CosemStructure* cosemStructure);
-
-  void ProcessRow(CosemStructure* cosemStructure);
-
-  void ProcessMeterData(CosemArray* cosemArray);
+  void ProcessOBISListVersionIdentifier(std::unique_ptr<CosemStructure>& cosemStructure);
+  void ProcessMeterId(std::unique_ptr<CosemStructure>& cosemStructure);
+  void ProcessMeterType(std::unique_ptr<CosemStructure>& cosemStructure);
+  void ProcessActivePowerPlus(std::unique_ptr<CosemStructure>& cosemStructure);
+  void ProcessActivePowerMinus(std::unique_ptr<CosemStructure>& cosemStructure);
+  void ProcessReactivePowerPlus(std::unique_ptr<CosemStructure>& cosemStructure);
+  void ProcessReactivePowerMinus(std::unique_ptr<CosemStructure>& cosemStructure);
+  void ProcessCurrentPhaseL1(std::unique_ptr<CosemStructure>& cosemStructure);
+  void ProcessCurrentPhaseL2(std::unique_ptr<CosemStructure>& cosemStructure);
+  void ProcessCurrentPhaseL3(std::unique_ptr<CosemStructure>& cosemStructure);
+  void ProcessInstantaneousVoltageL1(std::unique_ptr<CosemStructure>& cosemStructure);
+  void ProcessInstantaneousVoltageL2(std::unique_ptr<CosemStructure>& cosemStructure);
+  void ProcessInstantaneousVoltageL3(std::unique_ptr<CosemStructure>& cosemStructure);
+  void ProcessMeterDateTime(std::unique_ptr<CosemStructure>& cosemStructure);
+  void ProcessCumulativeHourlyActiveImportEnergy(std::unique_ptr<CosemStructure>& cosemStructure);
+  void ProcessCumulativeHourlyActiveExportEnergy(std::unique_ptr<CosemStructure>& cosemStructure);
+  void ProcessCumulativeHourlyReactiveImportEnergy(std::unique_ptr<CosemStructure>& cosemStructure);
+  void ProcessCumulativeHourlyReactiveExportEnergy(std::unique_ptr<CosemStructure>& cosemStructure);
+  void ProcessRow(std::unique_ptr<CosemStructure>& cosemStructure);
+  void ProcessMeterData(std::unique_ptr<CosemArray>& cosemArray);
 
 };

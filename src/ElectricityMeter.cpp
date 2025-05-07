@@ -8,9 +8,9 @@
 #include "ElectricityMeter.h"
 #include "silabs_utils.h"
 
-ElectricityMeter::ElectricityMeter(HanReader* hanReader)
+ElectricityMeter::ElectricityMeter(std::unique_ptr<HanReader> hanReader)
+  : _hanReader(std::move(hanReader))
 {
-  _hanReader = hanReader;
 }
 
 double ElectricityMeter::ActivePower()

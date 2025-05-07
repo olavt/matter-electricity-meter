@@ -8,6 +8,7 @@
 #pragma once
 
 #include <functional>
+#include <memory>
 
 #include "ElectricityEstimator.h"
 #include "Hanreader.h"
@@ -17,7 +18,9 @@ class ElectricityMeter
 
 public:
 
-  ElectricityMeter(HanReader* hanReader);
+  ElectricityMeter(std::unique_ptr<HanReader> hanReader);
+
+  virtual ~ElectricityMeter() = default;
 
   // Return Active Power in Watts
   double ActivePower();
@@ -59,7 +62,7 @@ protected:
 
   void OnMeterDataProcessingCompleted();
 
-  HanReader* _hanReader;
+  std::unique_ptr<HanReader> _hanReader;
   ElectricityEstimator _electricityEstimator;
 
 private:

@@ -15,11 +15,12 @@ CosemVisibleString::CosemVisibleString(std::span<const uint8_t> fromBytes, int& 
   uint8_t length = fromBytes[position];
   position++;
 
-  _visibleString = std::string(fromBytes.begin() + position, fromBytes.begin() + position + length);
+  auto data = fromBytes.subspan(position, length);
+  _visibleString = std::string(data.begin(), data.end());
   position += length;
 }
 
-std::string CosemVisibleString::ToString()
+std::string CosemVisibleString::ToString() const
 {
   return _visibleString;
 }

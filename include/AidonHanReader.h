@@ -7,17 +7,15 @@
 
 #pragma once
 
-#include "CosemArray.h"
 #include "HanReader.h"
-#include "SerialPort.h"
 
 class AidonHanReader : public HanReader
 {
 
 public:
 
-  AidonHanReader(SerialPort* serialPort);
+  AidonHanReader(std::unique_ptr<SerialPort> serialPort);
 
-  CosemArray* ReadMeterData();
+  std::unique_ptr<CosemArray> ReadMeterData() override;
 
 };

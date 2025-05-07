@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "SerialPort.h"
 #include "ElectricityMeter.h"
 #include "ElectricalPowerMeasurementDelegate.h"
@@ -24,8 +26,7 @@ public:
 
 private:
 
-  SerialPort* _serialPort = NULL;
-  ElectricityMeter* _electricityMeter;
+  std::unique_ptr<ElectricityMeter> _electricityMeter;
   ElectricalPowerMeasurementDelegate* _electricalPowerMeasurementDelegate;
   ElectricalPowerMeasurementInstance* _electricalPowerMeasurementInstance;
 

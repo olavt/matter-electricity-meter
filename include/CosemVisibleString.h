@@ -18,7 +18,7 @@ public:
 
   CosemVisibleString(std::span<const uint8_t> fromBytes, int& position);
 
-  std::string ToString();
+  std::string ToString() const;
 
 private:
 

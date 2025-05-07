@@ -8,6 +8,7 @@
 #pragma once
 
 #include <cstdint>
+#include <memory>
 #include <span>
 #include <string>
 #include "silabs_utils.h"
@@ -17,9 +18,9 @@ class CosemObject
 
 public:
 
-  static CosemObject* Create(std::span<const uint8_t> fromBytes, int& position);
+  static std::unique_ptr<CosemObject> Create(std::span<const uint8_t> fromBytes, int& position);
 
-  static CosemObject* CreateObjectHierarchy(std::span<const uint8_t> fromBytes);
+  static std::unique_ptr<CosemObject> CreateObjectHierarchy(std::span<const uint8_t> fromBytes);
 
   virtual ~CosemObject();
 
@@ -29,7 +30,7 @@ public:
 
 private:
 
-  enum class CosemDataType
+  enum class CosemDataType : uint8_t
   {
       Array = 0x01,
       Structure = 0x02,

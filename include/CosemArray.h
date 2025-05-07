@@ -8,6 +8,7 @@
 #pragma once
 
 #include "CosemObject.h"
+#include <memory>
 #include <vector>
 
 class CosemArray : public CosemObject
@@ -17,14 +18,16 @@ public:
 
   CosemArray(std::span<const uint8_t> fromBytes, int& position);
 
-  ~CosemArray();
+  ~CosemArray() = default;
 
-  int size();
+  int size() const;
 
-  CosemObject*& operator[](int index);
+  CosemObject* operator[](size_t index);
+
+  const CosemObject* operator[](size_t index) const;
 
 private:
 
-  std::vector<CosemObject*> _cosemObjects;
+  std::vector<std::unique_ptr<CosemObject>> _cosemObjects;
 
 };

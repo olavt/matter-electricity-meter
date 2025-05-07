@@ -15,7 +15,7 @@ CosemEnum::CosemEnum(std::span<const uint8_t> fromBytes, int& position)
   position++;
 }
 
-const char* CosemEnum::ToString()
+std::string CosemEnum::ToString() const
 {
   switch (_value)
   {

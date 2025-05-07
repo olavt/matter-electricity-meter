@@ -9,6 +9,8 @@
 
 #include "CosemObject.h"
 
+#include <string>
+
 class CosemEnum : public CosemObject
 {
 
@@ -16,7 +18,7 @@ public:
 
   CosemEnum(std::span<const uint8_t> fromBytes, int& position);
 
-  const char* ToString();
+  std::string ToString() const;
 
   void Log();
 

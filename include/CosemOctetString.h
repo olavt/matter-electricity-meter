@@ -17,15 +17,15 @@ class CosemOctetString : public CosemObject
 
 public:
 
-  // Copy constructor
-  CosemOctetString(const CosemOctetString& copyFrom);
-
   CosemOctetString(std::span<const uint8_t> fromBytes, int& position);
 
-  ~CosemOctetString();
+  ~CosemOctetString() = default;
+
+  // Copy constructor
+  CosemOctetString(const CosemOctetString& copyFrom) = default;
 
   // Copy assignment operator
-  CosemOctetString& operator=(const CosemOctetString& copyFrom);
+  CosemOctetString& operator=(const CosemOctetString& copyFrom) = default;
 
   std::string ToObisCodeString();
 
@@ -35,8 +35,6 @@ public:
 
 private:
 
-  //std::vector<uint8_t> _buffer;
-  uint8_t* _buffer;
-  int _size;
+  std::vector<uint8_t> _buffer;
 
 };

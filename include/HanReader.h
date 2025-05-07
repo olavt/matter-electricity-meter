@@ -12,22 +12,23 @@
 #include "SerialPort.h"
 #include <cstdint>
 #include <deque>
+#include <memory> // For std::unique_ptr
 
 class HanReader
 {
 
 public:
 
-  HanReader(SerialPort* serialPort);
+  HanReader(std::unique_ptr<SerialPort> serialPort);
 
-  virtual CosemArray* ReadMeterData() = 0;
+  virtual std::unique_ptr<CosemArray> ReadMeterData() = 0;
 
   bool Open();
 
 protected:
 
   // Returns NULL if no HDLC frame is ready / complete
-  HdlcFrame* ReadHdlcFrame();
+  std::unique_ptr<HdlcFrame> ReadHdlcFrame();
 
 private:
 
@@ -41,8 +42,8 @@ private:
 
   static constexpr std::size_t MAX_BUFFER_SIZE = 512;
 
-  HdlcFrame* _hdlcFrame;
-  SerialPort* _serialPort;
+  std::unique_ptr<HdlcFrame> _hdlcFrame;
+  std::unique_ptr<SerialPort> _serialPort;
   std::deque<uint8_t> _readBuffer;
 
 };

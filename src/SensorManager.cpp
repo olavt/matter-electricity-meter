@@ -33,20 +33,18 @@ MeterManager meterManager;
 namespace SensorManager
 {
 
-void SensorTimerTriggered(chip::System::Layer * aLayer, void * aAppState)
-{
-  UpdateMeters();
-
-  aLayer->StartTimer(kSensorReadPeriod, SensorTimerTriggered, nullptr);
-}
-
 CHIP_ERROR Init()
 {
     meterManager.Init();
 
     CHIP_ERROR status = CHIP_NO_ERROR;
 
-    SensorTimerTriggered(&chip::DeviceLayer::SystemLayer(), nullptr);
+    // Schedule the first execution of SensorTimerTriggered.
+    // ScheduleWork is done to make sure it executes from the Matter task
+    VerifyOrDieWithMsg(DeviceLayer::PlatformMgr().ScheduleWork([](intptr_t arg) {
+      SensorTimerTriggered(&chip::DeviceLayer::SystemLayer(), nullptr);
+    }) == CHIP_NO_ERROR,
+                       AppServer, "Failed to schedule the first SensorCallback!");
 
     return status;
 }
@@ -54,6 +52,13 @@ CHIP_ERROR Init()
 void UpdateMeters()
 {
     meterManager.ReadMeters();
+}
+
+void SensorTimerTriggered(chip::System::Layer * aLayer, void * aAppState)
+{
+  UpdateMeters();
+
+  aLayer->StartTimer(kSensorReadPeriod, SensorTimerTriggered, nullptr);
 }
 
 void ButtonActionTriggered(AppEvent * aEvent)

@@ -17,6 +17,8 @@ namespace SensorManager
 
   void UpdateMeters();
 
+  void SensorTimerTriggered(chip::System::Layer * aLayer, void * aAppState);
+
   void ButtonActionTriggered(AppEvent * aEvent);
 
 };

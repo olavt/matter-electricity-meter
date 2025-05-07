@@ -7,54 +7,13 @@
 
 #include "CosemOctetString.h"
 #include <sstream>
-#include <vector>
-
-CosemOctetString::CosemOctetString(const CosemOctetString& copyFrom)
-{
-    _size = copyFrom._size;
-    _buffer = new uint8_t[copyFrom._size];
-    for (int i = 0; i < copyFrom._size; i++)
-      _buffer[i] = copyFrom._buffer[i];
-}
 
 CosemOctetString::CosemOctetString(std::span<const uint8_t> fromBytes, int& position)
 {
   int length = fromBytes[position];
   position++;
-
-  //SILABS_LOG("[INFO] CosemOctetString::CosemOctetString: position=%d, length=%d", position);
-
-  _buffer = new uint8_t[length];
-  for (int i=0; i < length; i++)
-    _buffer[i] = fromBytes[position + i];
-  _size = length;
-
-  //_buffer.reserve(length);
-  //for (int i=0; i < length; i++)
-  //  _buffer.push_back(fromBytes[i]);
-
+  _buffer = std::vector<uint8_t>(fromBytes.begin() + position, fromBytes.begin() + position + length);
   position += length;
-}
-
-CosemOctetString::~CosemOctetString()
-{
-  delete[] _buffer;
-}
-
-// Copy assignment operator
-CosemOctetString& CosemOctetString::operator=(const CosemOctetString& copyFrom)
-{
-  uint8_t* localArray = new uint8_t[copyFrom._size];
-  // If the above statement throws,
-  // the object is still in the same state as before.
-  // None of the following statements will throw an exception :)
-  for (int i = 0; i < copyFrom._size; i++)
-      localArray[i] = copyFrom._buffer[i];
-  delete[] _buffer;
-  _buffer = localArray;
-  _size = copyFrom._size;
-
-  return *this;
 }
 
 std::string CosemOctetString::ToObisCodeString()
@@ -76,7 +35,7 @@ std::string CosemOctetString::ToObisCodeString()
 
 std::string CosemOctetString::ToHexString()
 {
-  return CosemObject::ToHexString(_buffer, _size);
+  return CosemObject::ToHexString(_buffer.data(), _buffer.size());
 }
 
 void CosemOctetString::Log()

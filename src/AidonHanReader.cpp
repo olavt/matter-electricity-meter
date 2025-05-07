@@ -7,34 +7,32 @@
 
 #include "AidonHanReader.h"
 #include "AidonAPDU.h"
+#include <memory>
 #include <span>
 
-AidonHanReader::AidonHanReader(SerialPort* serialPort) : HanReader(serialPort)
+AidonHanReader::AidonHanReader(std::unique_ptr<SerialPort> serialPort) : HanReader(std::move(serialPort))
 {
 }
 
-CosemArray* AidonHanReader::ReadMeterData()
+std::unique_ptr<CosemArray> AidonHanReader::ReadMeterData()
 {
-  HdlcFrame* hdlcFrame = ReadHdlcFrame();
-  if (hdlcFrame == NULL)
-    return NULL;
+  std::unique_ptr<HdlcFrame> hdlcFrame = ReadHdlcFrame();
+  if (hdlcFrame == nullptr)
+    return nullptr;
 
-  auto information = hdlcFrame->Information();
+  auto informationField = hdlcFrame->InformationField();
 
-  AidonAPDU* aidonAPDU = new AidonAPDU(information);
+  auto aidonAPDU = std::make_unique<AidonAPDU>(informationField);
   auto notificationBody = aidonAPDU->NotificationBody();
 
-  CosemObject* rootObject = CosemObject::CreateObjectHierarchy(notificationBody);
+  std::unique_ptr<CosemObject> rootObject = CosemObject::CreateObjectHierarchy(notificationBody);
+  //CosemObject* rootObject = CosemObject::CreateObjectHierarchy(notificationBody);
 
   // All the data from the HDLC frame is now stored locally in every object
   // in the CosemObject hierarchy.
-  delete aidonAPDU;
-  delete hdlcFrame;
 
   // The root object should be a pointer to a CosemArray
-  CosemArray* cosemArray = dynamic_cast<CosemArray*>(rootObject);
+  auto cosemArray = std::unique_ptr<CosemArray>(dynamic_cast<CosemArray*>(rootObject.release()));
 
   return cosemArray;
 }
-
-

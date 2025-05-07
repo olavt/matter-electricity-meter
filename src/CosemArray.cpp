@@ -18,26 +18,24 @@ CosemArray::CosemArray(std::span< const uint8_t> fromBytes, int& position)
 
   for (int i=0; i < length; i++)
   {
-    CosemObject* cosemObject = CosemObject::Create(fromBytes, position);
-    _cosemObjects.push_back(cosemObject);
+      std::unique_ptr<CosemObject> cosemObject = CosemObject::Create(fromBytes, position);
+      _cosemObjects.push_back(std::move(cosemObject));
   }
 }
 
-CosemArray::~CosemArray()
-{
-  int size = _cosemObjects.size();
-  for (int i=0; i < size; i++)
-    delete _cosemObjects[i];
-}
-
-int CosemArray::size()
+int CosemArray::size() const
 {
   return _cosemObjects.size();
 }
 
-CosemObject*& CosemArray::operator[](int index)
+CosemObject* CosemArray::operator[](size_t index)
 {
-  return _cosemObjects[index];
+    return _cosemObjects.at(index).get();
+}
+
+const CosemObject* CosemArray::operator[](size_t index) const
+{
+    return _cosemObjects.at(index).get();
 }
 
 

@@ -42,10 +42,12 @@ void MeterManager::Init()
   _electricalPowerMeasurementInstance->Init();
 
   char instanceName[] = "mikroe";
-  _serialPort = new SerialPort(instanceName);
-  _serialPort->SetReadBlockingMode(false);
+  std::unique_ptr<SerialPort> serialPort = std::make_unique<SerialPort>(instanceName);
+  serialPort->SetReadBlockingMode(false);
 
-  _electricityMeter = new AidonElectricityMeter(_serialPort);
+  _electricityMeter = std::make_unique<AidonElectricityMeter>(std::move(serialPort));
+  //_electricityMeter = std::make_unique<AidonElectricityMeter>(nullptr);
+
   //_electricityMeter = new AidonElectricityMeter(NULL);
   _electricityMeter->OnActivePowerUpdated = std::bind(&MeterManager::OnActivePowerUpdated, this);
   _electricityMeter->OnCumulativeEnergyUpdated = std::bind(&MeterManager::OnCumulativeEnergyUpdated, this);
