@@ -14,13 +14,16 @@ class CosemUnsigned16 : public CosemObject
 
 public:
 
-  CosemUnsigned16(std::span<const uint8_t> fromBytes, int& position);
+  static std::unique_ptr<CosemUnsigned16> Create(std::span<const uint8_t> fromBytes, size_t& position);
 
   uint16_t Value();
 
   void Log();
 
 private:
+
+  // Private constructor to enforce factory usage
+  CosemUnsigned16() = default;
 
   uint16_t _value;
 

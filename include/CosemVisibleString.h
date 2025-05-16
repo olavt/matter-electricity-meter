@@ -16,11 +16,14 @@ class CosemVisibleString : public CosemObject
 
 public:
 
-  CosemVisibleString(std::span<const uint8_t> fromBytes, int& position);
+  static std::unique_ptr<CosemVisibleString> Create(std::span<const uint8_t> fromBytes, size_t& position);
 
   std::string ToString() const;
 
 private:
+
+  // Private constructor to enforce factory usage
+  CosemVisibleString() = default;
 
   std::string _visibleString;
 

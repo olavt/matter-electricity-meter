@@ -19,13 +19,12 @@ AidonElectricityMeter::AidonElectricityMeter(std::unique_ptr<SerialPort> serialP
 {
 }
 
-//AidonHanReader* AidonElectricityMeter::CreateHanReader(SerialPort* serialPort)
-//{
-//  return new AidonHanReader(serialPort);
-//}
-
 void AidonElectricityMeter::ReadFromHanPort()
 {
+  if (!_hanReader) {
+      SILABS_LOG("AidonElectricityMeter::ReadFromHanPort: _hanReader is nullptr.");
+      return;
+  }
 
   std::unique_ptr<CosemArray> meterData = _hanReader->ReadMeterData();
   if (meterData == nullptr)
@@ -79,13 +78,26 @@ void AidonElectricityMeter::ProcessActivePowerPlus(std::unique_ptr<CosemStructur
   // List #: 1
   // Received every 2.5 seconds
   CosemUnsigned32* value = dynamic_cast<CosemUnsigned32*>((*cosemStructure)[1]);
+  if (!value) {
+      SILABS_LOG("AidonElectricityMeter::ProcessActivePowerPlus: value is nullptr.");
+      return;
+  }
+
   CosemStructure* scaleUnitStructure = dynamic_cast<CosemStructure*>((*cosemStructure)[2]);
+  if (!scaleUnitStructure) {
+      SILABS_LOG("AidonElectricityMeter::ProcessActivePowerPlus: scaleUnitStructure is nullptr.");
+      return;
+  }
+
   if (value && scaleUnitStructure) {
       CosemInteger8* scale = dynamic_cast<CosemInteger8*>((*scaleUnitStructure)[0]);
-      if (scale) {
-          double watts = value->Value() * pow(10, scale->Value());
-          UpdateActivePowerPlus(watts);
+      if (!scale) {
+          SILABS_LOG("AidonElectricityMeter::ProcessActivePowerPlus: scale is nullptr.");
+          return;
       }
+
+      double watts = value->Value() * pow(10, scale->Value());
+      UpdateActivePowerPlus(watts);
   }
 }
 
@@ -225,7 +237,7 @@ void AidonElectricityMeter::ProcessRow(std::unique_ptr<CosemStructure>& cosemStr
         return;
 
     std::string obisCode = octetString->ToObisCodeString();
-    // SILABS_LOG("%s", obisCode.c_str());
+    SILABS_LOG("AidonElectricityMeter::ProcessRow: %s", obisCode.c_str());
 
     if (obisCode == "1-1:0.2.129.255")      // OBIS List version identifier
         ProcessOBISListVersionIdentifier(cosemStructure);

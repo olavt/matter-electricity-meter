@@ -16,13 +16,16 @@ class CosemEnum : public CosemObject
 
 public:
 
-  CosemEnum(std::span<const uint8_t> fromBytes, int& position);
+  static std::unique_ptr<CosemEnum> Create(std::span<const uint8_t> fromBytes, size_t& position);
 
   std::string ToString() const;
 
   void Log();
 
 private:
+
+    // Private constructor to enforce factory usage
+  CosemEnum() = default;
 
   int8_t _value;
 

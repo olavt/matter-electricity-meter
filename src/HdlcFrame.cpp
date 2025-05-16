@@ -82,7 +82,7 @@ uint16_t HdlcFrame::HeaderCheckSequence()
 
 std::span<const uint8_t> HdlcFrame::InformationField()
 {
-  int start = 9 + DestinationAddressLength() + SourceAddressLength();
+  size_t start = 9 + DestinationAddressLength() + SourceAddressLength();
   size_t length = (FrameLength() - 2) - start + 1;
 
   std::span<const uint8_t> informationField = std::span{_buffer.data() + start, length};
@@ -98,7 +98,7 @@ uint16_t HdlcFrame::FrameCheckSequence()
   return fcs;
 }
 
-int HdlcFrame::Length()
+size_t HdlcFrame::Length()
 {
   return _buffer.size();
 }
@@ -115,17 +115,21 @@ bool HdlcFrame::FrameIsComplete()
   // Note! The Aidon meter may include the 0x7e (flag byte) inside the messages
   // Use length to check the frame and do not assume that 0x7e is the closing flag
 
-  if (Length() >= MAX_BUFFER_SIZE)
+  if (Length() >= MAX_BUFFER_SIZE) {
     return true;
+  }
 
-  if (Length() == 0)
+  if (Length() == 0) {
       return false;
+  }
 
-  if (Length() < 3)
+  if (Length() < 3) {
       return false;   // Need to get to FrameLength to have complete message
+  }
 
-  if (Length() >= (1 + FrameLength() + 1))
+  if (Length() >= (1 + FrameLength() + 1)) {
       return true;
+  }
 
   return false;
 }

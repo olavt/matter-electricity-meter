@@ -26,25 +26,23 @@ using namespace chip::app::Clusters;
 using namespace chip::DeviceLayer::Silabs;
 using namespace chip::Protocols::InteractionModel;
 
+namespace SensorManager
+{
+
 constexpr chip::System::Clock::Milliseconds32 kSensorReadPeriod = chip::System::Clock::Milliseconds32(1000);
 
 MeterManager meterManager;
 
-namespace SensorManager
-{
 
 CHIP_ERROR Init()
 {
     meterManager.Init();
 
-    CHIP_ERROR status = CHIP_NO_ERROR;
-
-    // Schedule the first execution of SensorTimerTriggered.
-    // ScheduleWork is done to make sure it executes from the Matter task
-    VerifyOrDieWithMsg(DeviceLayer::PlatformMgr().ScheduleWork([](intptr_t arg) {
-      SensorTimerTriggered(&chip::DeviceLayer::SystemLayer(), nullptr);
-    }) == CHIP_NO_ERROR,
-                       AppServer, "Failed to schedule the first SensorCallback!");
+    SILABS_LOG("Init: Calling StartTimer");
+    CHIP_ERROR status = chip::DeviceLayer::SystemLayer().StartTimer(chip::System::Clock::Milliseconds32(30000), SensorTimerCallback, nullptr);
+    if (status != CHIP_NO_ERROR) {
+        SILABS_LOG("Init: StartTimer returned error: %s.", chip::ErrorStr(status));
+    }
 
     return status;
 }
@@ -54,11 +52,33 @@ void UpdateMeters()
     meterManager.ReadMeters();
 }
 
-void SensorTimerTriggered(chip::System::Layer * aLayer, void * aAppState)
+void ProcessMeterDataCallback(intptr_t context)
 {
+  SILABS_LOG("ProcessMeterDataCallback: Started to execute.");
+
   UpdateMeters();
 
-  aLayer->StartTimer(kSensorReadPeriod, SensorTimerTriggered, nullptr);
+  SILABS_LOG("ProcessMeterDataCallback: Finished executing.");
+}
+
+void SensorTimerCallback(chip::System::Layer* aLayer, void* aAppState)
+{
+  SILABS_LOG("SensorTimerCallback: Started to execute.");
+
+  // Schedule the data processing in the Matter event loop
+  CHIP_ERROR status = chip::DeviceLayer::PlatformMgr().ScheduleWork(ProcessMeterDataCallback, reinterpret_cast<intptr_t>(nullptr));
+  if (status != CHIP_NO_ERROR) {
+      SILABS_LOG("SensorTimerCallback: Failed to schedule work: %s", chip::ErrorStr(status));
+  }
+
+  SILABS_LOG("SensorTimerCallback: Calling StartTimer");
+  status = aLayer->StartTimer(kSensorReadPeriod, SensorTimerCallback, nullptr);
+  if (status != CHIP_NO_ERROR) {
+      SILABS_LOG("SensorTimerCallback: StartTimer returned error: %s.", chip::ErrorStr(status));
+  }
+
+  SILABS_LOG("SensorTimerCallback: Finished executing.");
+  SILABS_LOG("");
 }
 
 void ButtonActionTriggered(AppEvent * aEvent)

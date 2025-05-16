@@ -45,7 +45,7 @@ public:
   uint16_t FrameCheckSequence();
 
   // The total length of the HDLC Frame
-  int Length();
+  size_t Length();
 
   bool ChecksumIsOk();
 

@@ -16,9 +16,13 @@ AidonHanReader::AidonHanReader(std::unique_ptr<SerialPort> serialPort) : HanRead
 
 std::unique_ptr<CosemArray> AidonHanReader::ReadMeterData()
 {
+  SILABS_LOG("AidonHanReader::ReadMeterData: Entering");
+
   std::unique_ptr<HdlcFrame> hdlcFrame = ReadHdlcFrame();
-  if (hdlcFrame == nullptr)
-    return nullptr;
+  if (hdlcFrame == nullptr) {
+      SILABS_LOG("AidonHanReader::ReadMeterData: ReadHdlcFrame returned null.");
+      return nullptr;
+  }
 
   auto informationField = hdlcFrame->InformationField();
 
@@ -26,13 +30,14 @@ std::unique_ptr<CosemArray> AidonHanReader::ReadMeterData()
   auto notificationBody = aidonAPDU->NotificationBody();
 
   std::unique_ptr<CosemObject> rootObject = CosemObject::CreateObjectHierarchy(notificationBody);
-  //CosemObject* rootObject = CosemObject::CreateObjectHierarchy(notificationBody);
 
   // All the data from the HDLC frame is now stored locally in every object
-  // in the CosemObject hierarchy.
+  // in the CosemObject hierarchy. Safe to delete it.
 
   // The root object should be a pointer to a CosemArray
   auto cosemArray = std::unique_ptr<CosemArray>(dynamic_cast<CosemArray*>(rootObject.release()));
+
+  SILABS_LOG("AidonHanReader::ReadMeterData: Returning cosemArray of size %d.", cosemArray->size());
 
   return cosemArray;
 }

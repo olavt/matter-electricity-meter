@@ -7,12 +7,22 @@
 
 #include "CosemEnum.h"
 
-CosemEnum::CosemEnum(std::span<const uint8_t> fromBytes, int& position)
+std::unique_ptr<CosemEnum> CosemEnum::Create(std::span<const uint8_t> fromBytes, size_t& position)
 {
-  //SILABS_LOG("[INFO] CosemEnum::CosemEnum: position=%d", position);
+  //SILABS_LOG("[INFO] CosemEnum::Create: position=%d", position);
 
-  _value = fromBytes[position];
+  // Check if there is enough data to read a single byte
+  if (position >= fromBytes.size()) {
+    return nullptr;
+  }
+
+  // Create the object
+  CosemEnum* cosemEnum = new CosemEnum();
+
+  cosemEnum->_value = fromBytes[position];
   position++;
+
+  return std::unique_ptr<CosemEnum>(cosemEnum);
 }
 
 std::string CosemEnum::ToString() const

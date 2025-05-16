@@ -7,20 +7,37 @@
 
 #include "CosemStructure.h"
 
-CosemStructure::CosemStructure(std::span<const uint8_t> fromBytes, int& position)
+std::unique_ptr<CosemStructure> CosemStructure::Create(std::span<const uint8_t> fromBytes, size_t& position)
 {
-  //SILABS_LOG("[INFO] CosemStructure::CosemStructure: position=%d", position);
+  //SILABS_LOG("[INFO] CosemStructure::Create: position=%d", position);
 
-  int length = fromBytes[position];
+  if (position >= fromBytes.size()) {
+      // SILABS_LOG("[ERROR] CosemArray::Create: Position exceeds span size.");
+      return nullptr;
+  }
+
+  // Create the object
+  CosemStructure* cosemStructure = new CosemStructure();
+
+  size_t numObjects = fromBytes[position];
   position++;
 
-  _cosemObjects.reserve(length);
+  cosemStructure->_cosemObjects.reserve(numObjects);
 
-  for (int i=0; i < length; i++)
+  for (size_t i=0; i < numObjects; i++)
   {
-      std::unique_ptr<CosemObject> cosemObject = CosemObject::Create(fromBytes, position);
-      _cosemObjects.push_back(std::move(cosemObject));
+      std::unique_ptr<CosemObject> childObject = CosemObject::Create(fromBytes, position);
+      if (!childObject) {
+          // Handle failure (e.g., log error and return nullptr)
+          // SILABS_LOG("[ERROR] CosemStructure::Create: Failed to create CosemObject at index %u", i);
+          delete cosemStructure;
+          return nullptr;
+      }
+
+      cosemStructure->_cosemObjects.push_back(std::move(childObject));
   }
+
+  return std::unique_ptr<CosemStructure>(cosemStructure);
 }
 
 int CosemStructure::size() const

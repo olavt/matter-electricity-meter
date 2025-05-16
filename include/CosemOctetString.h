@@ -17,7 +17,7 @@ class CosemOctetString : public CosemObject
 
 public:
 
-  CosemOctetString(std::span<const uint8_t> fromBytes, int& position);
+  static std::unique_ptr<CosemOctetString> Create(std::span<const uint8_t> fromBytes, size_t& position);
 
   ~CosemOctetString() = default;
 
@@ -34,6 +34,9 @@ public:
   void Log();
 
 private:
+
+  // Private constructor to enforce factory usage
+  CosemOctetString() = default;
 
   std::vector<uint8_t> _buffer;
 

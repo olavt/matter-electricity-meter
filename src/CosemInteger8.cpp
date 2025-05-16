@@ -7,12 +7,22 @@
 
 #include "CosemInteger8.h"
 
-CosemInteger8::CosemInteger8(std::span<const uint8_t> fromBytes, int& position)
+std::unique_ptr<CosemInteger8> CosemInteger8::Create(std::span<const uint8_t> fromBytes, size_t& position)
 {
-  //SILABS_LOG("[INFO] CosemInteger8::CosemInteger8: position=%d", position);
+  //SILABS_LOG("[INFO] CosemInteger8::Create: position=%d", position);
 
-  _value = fromBytes[position];
+  // Check if there is enough data to read a single byte
+  if (position >= fromBytes.size()) {
+    return nullptr;
+  }
+
+  // Create the object
+  CosemInteger8* cosemInteger8 = new CosemInteger8();
+
+  cosemInteger8->_value = fromBytes[position];
   position++;
+
+  return std::unique_ptr<CosemInteger8>(cosemInteger8);
 }
 
 void CosemInteger8::Log()

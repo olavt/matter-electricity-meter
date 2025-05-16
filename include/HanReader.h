@@ -27,7 +27,7 @@ public:
 
 protected:
 
-  // Returns NULL if no HDLC frame is ready / complete
+  // Returns nullptr if no HDLC frame is ready / complete
   std::unique_ptr<HdlcFrame> ReadHdlcFrame();
 
 private:
@@ -36,12 +36,17 @@ private:
 
   void GetMoreBytes();
 
+  void ReadBytesFromSerialPort();
+
   void GetTestBytes();
 
-  void ReadBytesFromSerialPort();
+  void CopyBytesWithInsert(std::deque<uint8_t>& destBuffer, const uint8_t* sourceBuffer, size_t bufferSize);
+
+  void CopyBytesWithPushBack(std::deque<uint8_t>& destBuffer, const uint8_t* sourceBuffer, size_t bufferSize);
 
   static constexpr std::size_t MAX_BUFFER_SIZE = 512;
 
+  //HdlcFrame* _hdlcFrame = nullptr;
   std::unique_ptr<HdlcFrame> _hdlcFrame;
   std::unique_ptr<SerialPort> _serialPort;
   std::deque<uint8_t> _readBuffer;

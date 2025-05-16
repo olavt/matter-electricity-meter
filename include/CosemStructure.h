@@ -16,7 +16,7 @@ class CosemStructure : public CosemObject
 
 public:
 
-  CosemStructure(std::span<const uint8_t> fromBytes, int& position);
+  static std::unique_ptr<CosemStructure> Create(std::span<const uint8_t> fromBytes, size_t& position);
 
   ~CosemStructure() = default;
 
@@ -27,6 +27,9 @@ public:
   const CosemObject* operator[](size_t index) const;
 
 private:
+
+  // Private constructor to enforce factory usage
+  CosemStructure() = default;
 
   std::vector<std::unique_ptr<CosemObject>> _cosemObjects;
 

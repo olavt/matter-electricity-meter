@@ -8,13 +8,30 @@
 #include "CosemOctetString.h"
 #include <sstream>
 
-CosemOctetString::CosemOctetString(std::span<const uint8_t> fromBytes, int& position)
-{
-  int length = fromBytes[position];
-  position++;
-  _buffer = std::vector<uint8_t>(fromBytes.begin() + position, fromBytes.begin() + position + length);
-  position += length;
-}
+  std::unique_ptr<CosemOctetString> CosemOctetString::Create(std::span<const uint8_t> fromBytes, size_t& position)
+  {
+    if (position >= fromBytes.size()) {
+      //SILABS_LOG("[ERROR] CosemOctetString::Create: position=%zu exceeds buffer size=%zu", position, fromBytes.size());
+      return nullptr;
+    }
+
+    size_t length = fromBytes[position];
+    position++;
+
+    // Check if there are enough bytes to read 'length' bytes
+    if (position + length > fromBytes.size()) {
+      //SILABS_LOG("[ERROR] CosemOctetString::Create: position=%zu, length=%zu exceeds buffer size=%zu", position, length, fromBytes.size());
+      return nullptr;
+    }
+
+    // Create the object
+    CosemOctetString* cosemOctetString = new CosemOctetString();
+
+    cosemOctetString->_buffer = std::vector<uint8_t>(fromBytes.begin() + position, fromBytes.begin() + position + length);
+    position += length;
+
+    return std::unique_ptr<CosemOctetString>(cosemOctetString);
+  }
 
 std::string CosemOctetString::ToObisCodeString()
 {

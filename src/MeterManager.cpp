@@ -48,7 +48,6 @@ void MeterManager::Init()
   _electricityMeter = std::make_unique<AidonElectricityMeter>(std::move(serialPort));
   //_electricityMeter = std::make_unique<AidonElectricityMeter>(nullptr);
 
-  //_electricityMeter = new AidonElectricityMeter(NULL);
   _electricityMeter->OnActivePowerUpdated = std::bind(&MeterManager::OnActivePowerUpdated, this);
   _electricityMeter->OnCumulativeEnergyUpdated = std::bind(&MeterManager::OnCumulativeEnergyUpdated, this);
 }
@@ -56,9 +55,15 @@ void MeterManager::Init()
 void MeterManager::ReadMeters()
 {
   SILABS_LOG("MeterManager::ReadMeters: Start");
+
   //auto start = sl_sleeptimer_get_tick_count64();
   //auto start = steady_clock::now();
   auto start = chip::System::SystemClock().GetMonotonicMilliseconds64().count();
+
+  if (!_electricityMeter) {
+      SILABS_LOG("MeterManager::ReadMeters: _electricityMeter is nullptr.");
+      return;
+  }
 
   _electricityMeter->ReadFromHanPort();
 

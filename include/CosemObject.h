@@ -1,10 +1,3 @@
-/*
- * CosemObject.h
- *
- *  Created on: Feb 2, 2024
- *      Author: olavt
- */
-
 #pragma once
 
 #include <cstdint>
@@ -18,8 +11,6 @@ class CosemObject
 
 public:
 
-  static std::unique_ptr<CosemObject> Create(std::span<const uint8_t> fromBytes, int& position);
-
   static std::unique_ptr<CosemObject> CreateObjectHierarchy(std::span<const uint8_t> fromBytes);
 
   virtual ~CosemObject();
@@ -27,6 +18,10 @@ public:
   static std::string ToHexString(const uint8_t bytes[], int length);
 
   virtual void Log();
+
+protected:
+
+  static std::unique_ptr<CosemObject> Create(std::span<const uint8_t> fromBytes, size_t& position);
 
 private:
 

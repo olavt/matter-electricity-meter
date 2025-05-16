@@ -15,6 +15,6 @@ class HexStrings
 
 public:
 
-  static std::string ToHexString(const uint8_t* fromBytes, int length);
+  static std::string ToHexString(const uint8_t* fromBytes, size_t length);
 
 };

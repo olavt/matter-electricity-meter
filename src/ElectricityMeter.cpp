@@ -63,7 +63,7 @@ void ElectricityMeter::UpdateMeterType(std::string meterType)
 
 void ElectricityMeter::UpdateCumulativeActiveImportEnergy(double kwh)
 {
-  SILABS_LOG("Cumulative hourly active import energy (A+) (Q1+Q4): %d wh.", (int)(kwh*1000));
+  SILABS_LOG("Cumulative hourly active import energy (A+) (Q1+Q4): %d Wh.", (int)(kwh*1000));
 
   _cumulativeActiveImportEnergy = kwh;
   _cumulativeActiveImportEnergyUpdated = true;
