@@ -5,7 +5,7 @@
 
 This article shows how to create a Matter device that can read data from the HAN-port of a domestic electricity meter to read data for power usage and electricity consumption.
 
-This article is based on Simplicity SDK Suite v2024.12.0 with Silicon Labs Matter 2.5.0 extensions (based on Matter version 1.4).
+This article is based on Simplicity SDK Suite v2025.6.0 with Silicon Labs Matter 2.6.0 extensions (based on Matter version 1.4).
 
 <img src="./images/xg24-ek2703a.png" alt="Silicon Labs EFR32xG24 Explorer Kit Board" width="200" height="170"/>
 
@@ -13,12 +13,12 @@ This article is based on Simplicity SDK Suite v2024.12.0 with Silicon Labs Matte
 
 ### What you will need
 
-- A PC running Windows as the development workstation.
+- A computer running Windows as the development workstation.
 - Install Simplicity Studio V5 from Silicon Labs.
 - Silicon Labs EFR32xG24 Explorer Kit Board (EK2703A).
 - Mikro Elektronika M-BUS SLAVE CLICK
 
-This article assumes that you have already installed Simplicity Studio V5 with Simplicity SDK Suite v2024.12.0 and Silicon Labs Matter 2.5.0.
+This article assumes that you have already installed Simplicity Studio V5 with Simplicity SDK Suite v2025.6.0 and Silicon Labs Matter 2.6.0.
 
 ## Mount the Mikro Elektronika M-BUS SLAVE CLICK
 
@@ -43,7 +43,7 @@ git config --system core.longpaths true
 
 ## Create a new project based on the "Matter - SoC Sensor over Thread with internal Bootloader" Solution Example
 
-Start by creating a new project in Simplicity Studio V5 by selecting the "Matter - SoC Sensor over Thread with internal Bootloader" example solution project and click "Create":
+Start by creating a new project in Simplicity Studio V5 by selecting the "Matter - SoC Multi Sensor over Thread with internal Bootloader" example solution project and click "Create":
 
 ![Matter - SoC Sensor over Thread with internal Bootloader example solution](./images/matter-sensor-thread-example-solution.png)
 
@@ -155,14 +155,6 @@ Select the "mikroe" instance and click "Configure"
 
 Change the Baud Rate to 2400, the Receive Buffer Size to 512 and the CTS and RTS to None.
 
-## Change the Matter Device Type
-
-Open the 'CHIPProjectConfig.h' file located in the project include directory.
-
-Change the CHIP_DEVICE_CONFIG_DEVICE_PRODUCT_ID as follows:
-
-#define CHIP_DEVICE_CONFIG_DEVICE_PRODUCT_ID 0x8003
-
 ## Add Support for Matter Electrical Sensor
 
 Open the config/common/sensor-thread-app.zap file in the ZAP editor by double-clicking on it.
@@ -185,30 +177,41 @@ Search for "Occupancy" and uninstall the "Occupancy Sensing Server Cluster" comp
 
 Now build the project to find the references to the deleted code. Delete the references to the deleted code.
 
-## Workaround for bug in sleep.c
+## Change the Matter Product Id
 
-If you get a compilation error in sleep.c change the following code:
+Open the 'CHIPProjectConfig.h' file located in the project include directory.
 
-From:
+Change the CHIP_DEVICE_CONFIG_DEVICE_PRODUCT_ID as follows:
 
-```cpp
-#if defined(SL_CATALOG_IOSTREAM_EUSART_PRESENT) || defined(SL_CATALOG_IOSTREAM_USART_PRESENT)
-    isPending = isPending || efr32UartIsDataReady();
-#endif
-```
-
-to:
-
-```cpp
-#if defined(SL_CATALOG_OPENTHREAD_UART_PRESENT)
-    isPending = isPending || efr32UartIsDataReady();
-#endif
-```
-
+#define CHIP_DEVICE_CONFIG_DEVICE_PRODUCT_ID 0x8003
 
 ## Add new code for the Electricity Meter
 
 TBD
+
+## Build the projects in the solution
+
+Select the solution in Simplicity Studio and select "Build". This will build the bootloader and the application project.
+
+## Change the Matter Vendor Name / Product Name
+
+Open the .slcp file in your project and select "CONFIGURATION TOOLS".
+
+Find "Matter Provisioning" in the list of tools and select "Open".
+
+Select the "MATTER DEVICE PROVISIONING" tab.
+
+Scroll down to the "OPTIONAL" section and enter values into the "Vendor Name" and "Product Name" input fields.
+
+Select "Provision Device"
+
+## Erase the device
+
+Open the bootloader project and expand the Binaries, select the .s37 file and select "Flash to Device".
+
+Select "Unlock Debug Access" and then "Erase".
+
+
 
 
 
