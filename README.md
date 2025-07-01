@@ -183,7 +183,9 @@ Open the 'CHIPProjectConfig.h' file located in the project include directory.
 
 Change the CHIP_DEVICE_CONFIG_DEVICE_PRODUCT_ID as follows:
 
+```c++
 #define CHIP_DEVICE_CONFIG_DEVICE_PRODUCT_ID 0x8003
+```
 
 ## Add new code for the Electricity Meter
 
