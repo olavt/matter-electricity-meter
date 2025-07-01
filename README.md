@@ -33,11 +33,11 @@ To avoid issues with filename length restrictions, make sure to apply settings t
 
 ### Windows
 
-https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry#enable-long-paths-in-windows-10-version-1607-and-later
+[Enable long paths in Windows 10, version 1607, and later](https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry#enable-long-paths-in-windows-10-version-1607-and-later)
 
 ### Git
 
-```
+```bash
 git config --system core.longpaths true
 ```
 
@@ -53,9 +53,8 @@ This is a good starting point as it already implements a fully functional Matter
 
 See this article for more details on Creating a Gecko Bootloader for Use in Matter OTA Software Update: https://docs.silabs.com/matter/2.0.0/matter-overview-guides/ota-bootloader
 
-Open the .slcp file in your bootloader project and select "SOFTWARE COMPONENTS".
-
-Make sure that the "GBL Compression (LZMA)" component under Platform->Bootloader->Core is installed:
+- Open the .slcp file in your bootloader project and select "SOFTWARE COMPONENTS".
+- Make sure that the "GBL Compression (LZMA)" component under Platform->Bootloader->Core is installed:
 
 ![GBL Compression (LZMA)](./images/bootloader-core-gbl-compression-lzma.png)
 
@@ -81,9 +80,8 @@ Clear all checkboxes in the Quality settings filter as shown below:
 
 #### Remove all ICD related components
 
-Type in "ICD" in the search box and press Enter.
-
-Uninstall all these components:
+- Type in "ICD" in the search box and press Enter.
+- Uninstall all these components:
 
 ![Uninstall ICD components](./images/uninstall-icd-components.png)
 
@@ -121,7 +119,7 @@ If you get the message "The Stack (FTD) you are attempting to install is conflic
 
 ![Install FTD](./images/replace-icd-with-ftd.png)
 
-If you get the message "TThe Stack (FTD) you are attempting to install is conflicting with Stack (MTD). As a result, your component was not added.", select "Replace Stack (MTD) with Stack (FTD)" and click OK.
+If you get the message "The Stack (FTD) you are attempting to install is conflicting with Stack (MTD). As a result, your component was not added.", select "Replace Stack (MTD) with Stack (FTD)" and click OK.
 
 ![Install FTD](./images/replace-mtd-with-ftd.png)
 
@@ -163,9 +161,8 @@ By default the example project creates the following endpoints:
 
 ![Default Endpoints](./images/default-endpoints.png)
 
-Delete endpoint 1 through 3.
-
-Create a new endpoint and select "Matter Electrical Sensor" in the Device dropdown list. Click Create.
+- Delete endpoint 1 through 3.
+- Create a new endpoint and select "Matter Electrical Sensor" in the Device dropdown list. Click Create.
 
 ![Matter Electrical Sensor](./images/matter-electrical-sensor.png)
 
@@ -173,15 +170,14 @@ Create a new endpoint and select "Matter Electrical Sensor" in the Device dropdo
 
 When you create the sensor project it defaults to Occupancy Sensor and Temperature sensor. We will not be used the occupancy sensor functionality, so uninstall the "Occupancy Sensing Server Cluster".
 
-Search for "Occupancy" and uninstall the "Occupancy Sensing Server Cluster" component.
-
-Now build the project to find the references to the deleted code. Delete the references to the deleted code.
+- Search for "Occupancy" and uninstall the "Occupancy Sensing Server Cluster" component.
+- Now build the project to find the references to the deleted code. Delete the references to the deleted code.
 
 ## Change the Matter Product Id
 
 Open the 'CHIPProjectConfig.h' file located in the project include directory.
 
-Change the CHIP_DEVICE_CONFIG_DEVICE_PRODUCT_ID as follows:
+- Change the CHIP_DEVICE_CONFIG_DEVICE_PRODUCT_ID as follows:
 
 ```c++
 #define CHIP_DEVICE_CONFIG_DEVICE_PRODUCT_ID 0x8003
@@ -197,21 +193,16 @@ Select the solution in Simplicity Studio and select "Build". This will build the
 
 ## Change the Matter Vendor Name / Product Name
 
-Open the .slcp file in your project and select "CONFIGURATION TOOLS".
-
-Find "Matter Provisioning" in the list of tools and select "Open".
-
-Select the "MATTER DEVICE PROVISIONING" tab.
-
-Scroll down to the "OPTIONAL" section and enter values into the "Vendor Name" and "Product Name" input fields.
-
-Select "Provision Device"
+- Open the .slcp file in your project and select "CONFIGURATION TOOLS".
+- Find "Matter Provisioning" in the list of tools and select "Open".
+- Select the "MATTER DEVICE PROVISIONING" tab.
+- Scroll down to the "OPTIONAL" section and enter values into the "Vendor Name" and "Product Name" input fields.
+- Select "Provision Device"
 
 ## Erase the device
 
-Open the bootloader project and expand the Binaries, select the .s37 file and select "Flash to Device".
-
-Select "Unlock Debug Access" and then "Erase".
+- Open the bootloader project and expand the Binaries, select the .s37 file and select "Flash to Device".
+- Select "Unlock Debug Access" and then "Erase".
 
 
 
